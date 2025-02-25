@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Create a virtual environment
+python -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+pip install pytest pytest-asyncio httpx
+
+# Create database schema (example)
+cat > init_db.sql << EOF
+CREATE TABLE IF NOT EXISTS items (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT
+);
+EOF
+
+# Run database migrations (you'd use a tool like Alembic in a real project)
+# For now, we'll use a simple SQL file
+export DB_HOST=localhost
+export DB_NAME=postgres
+export DB_USER=postgres
+export DB_PASSWORD=postgres
+export DB_PORT=5432
+
+# Start the application for local development
+uvicorn app:app --reload
